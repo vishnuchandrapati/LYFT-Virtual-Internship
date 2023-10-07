@@ -1,0 +1,113 @@
+import java.util.HashMap;
+import java.util.Map;
+
+// Abstract base class for car components
+abstract class CarComponent {
+    private String type;
+
+    public CarComponent(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+}
+
+// Concrete engine class
+class Engine extends CarComponent {
+    public Engine(String type) {
+        super(type);
+    }
+}
+
+// Concrete battery class
+class Battery extends CarComponent {
+    public Battery(String type) {
+        super(type);
+    }
+}
+
+// Concrete tire class
+class Tire extends CarComponent {
+    public Tire(String type) {
+        super(type);
+    }
+}
+
+// Class representing a car model
+class Car {
+    private Engine engine;
+    private Battery battery;
+    private Tire tire;
+
+    public Car(Engine engine, Battery battery, Tire tire) {
+        this.engine = engine;
+        this.battery = battery;
+        this.tire = tire;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public Battery getBattery() {
+        return battery;
+    }
+
+    public Tire getTire() {
+        return tire;
+    }
+}
+
+// Class representing the Lyft rental car system
+class LyftSystem {
+    private Map<String, Car> carModels = new HashMap<>();
+
+    public void addCarModel(String name, Car car) {
+        carModels.put(name, car);
+    }
+
+    public Car getCarModel(String name) {
+        return carModels.get(name);
+    }
+
+    public boolean shouldServiceCar(Car car) {
+        // Implement service criteria logic here
+        // For example, check engine and battery types and mileage
+        // Return true or false based on criteria
+        return true;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create car components
+        Engine capuletEngine = new Engine("Capulet Engine");
+        Battery spindlerBattery = new Battery("Spindler Battery");
+        Tire standardTire = new Tire("Standard Tire");
+
+        // Create car models
+        Car calliope = new Car(capuletEngine, spindlerBattery, standardTire);
+        Car glissade = new Car(new Engine("Willoughby Engine"), spindlerBattery, standardTire);
+        Car palindrome = new Car(new Engine("Sternman Engine"), spindlerBattery, standardTire);
+        Car rorschach = new Car(new Engine("Willoughby Engine"), new Battery("Nubbin Battery"), standardTire);
+        Car thovex = new Car(capuletEngine, new Battery("Nubbin Battery"), standardTire);
+
+        // Create Lyft system
+        LyftSystem lyftSystem = new LyftSystem();
+
+        // Add car models to the system
+        lyftSystem.addCarModel("Calliope", calliope);
+        lyftSystem.addCarModel("Glissade", glissade);
+        lyftSystem.addCarModel("Palindrome", palindrome);
+        lyftSystem.addCarModel("Rorschach", rorschach);
+        lyftSystem.addCarModel("Thovex", thovex);
+
+        // Example: Check if a car should be serviced
+        Car selectedCar = lyftSystem.getCarModel("Calliope");
+        boolean shouldService = lyftSystem.shouldServiceCar(selectedCar);
+
+        System.out.println("Should service car: " + shouldService);
+    }
+}
