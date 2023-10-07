@@ -1,0 +1,53 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class LyftSystemTests {
+
+    @Test
+    public void testUpgradedSpindlerBatteryServiceCriteria() {
+        // Create a car with an upgraded Spindler battery
+        Car carWithUpgradedSpindlerBattery = new Car(
+                new Engine("Capulet Engine"),
+                new Battery("Spindler Battery", 3),  // Upgraded to 3 years service criteria
+                new Tire("Carrigan Tire", new double[]{0.8, 0.85, 0.88, 0.92})
+        );
+
+        LyftSystem lyftSystem = new LyftSystem();
+        lyftSystem.addCarModel("CarWithUpgradedSpindlerBattery", carWithUpgradedSpindlerBattery);
+
+        // Test if the car with upgraded Spindler battery requires service after 3 years
+        assertFalse(lyftSystem.shouldServiceCar(carWithUpgradedSpindlerBattery));
+    }
+
+    @Test
+    public void testTireServiceCriteriaCarrigan() {
+        // Create a car with Carrigan tires
+        Car carWithCarriganTires = new Car(
+                new Engine("Capulet Engine"),
+                new Battery("Spindler Battery"),
+                new Tire("Carrigan Tire", new double[]{0.8, 0.85, 0.88, 0.92})
+        );
+
+        LyftSystem lyftSystem = new LyftSystem();
+        lyftSystem.addCarModel("CarWithCarriganTires", carWithCarriganTires);
+
+        // Test if the car with Carrigan tires requires service when one or more tires are >= 0.9
+        assertTrue(lyftSystem.shouldServiceCar(carWithCarriganTires));
+    }
+
+    @Test
+    public void testTireServiceCriteriaOctoprime() {
+        // Create a car with Octoprime tires
+        Car carWithOctoprimeTires = new Car(
+                new Engine("Capulet Engine"),
+                new Battery("Spindler Battery"),
+                new Tire("Octoprime Tire", new double[]{0.8, 0.85, 0.88, 0.92})
+        );
+
+        LyftSystem lyftSystem = new LyftSystem();
+        lyftSystem.addCarModel("CarWithOctoprimeTires", carWithOctoprimeTires);
+
+        // Test if the car with Octoprime tires requires service when the sum of tire wear is >= 3
+        assertFalse(lyftSystem.shouldServiceCar(carWithOctoprimeTires));
+    }
+}
